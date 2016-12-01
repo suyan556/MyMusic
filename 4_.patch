@@ -1,0 +1,908 @@
+Index: app/src/main/res/layout/dialog_tiem.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/dialog_tiem.xml	(date 1476804096000)
++++ app/src/main/res/layout/dialog_tiem.xml	(revision )
+@@ -22,7 +22,7 @@
+             android:layout_height="wrap_content"
+             android:text="下一首播放"
+             android:layout_gravity="center"
+-            android:layout_marginLeft="20dp"
++            android:layout_marginLeft="10dp"
+             android:textSize="16sp"
+             android:textColor="#000"
+             />
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(date 1476804096000)
++++ app/src/main/res/values/colors.xml	(revision )
+@@ -3,6 +3,11 @@
+     <color name="colorPrimary">#3F51B5</color>
+     <color name="colorPrimaryDark">#303F9F</color>
+     <color name="colorAccent">#FF4081</color>
+-    <color name="red">#f5000c</color>
+     <color name="red_prs">#f53740</color>
++    <color name="blue">#0000FF</color><!-- 蓝色  -->
++    <color name="aquamarine">#7FFFD4</color><!-- 碧绿色 -->
++    <color name="white">#FFFFFF</color><!-- 白色  -->
++    <color name="red">#FF0000</color><!-- 红色  -->
++    <color name="gray">#ccc9c9</color><!-- 浅灰色  -->
++    <color name="darkGrey">#cbcbcb</color><!-- 深灰色  -->
+ </resources>
+Index: app/src/main/res/anim/push_buttom_out.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/anim/push_buttom_out.xml	(revision )
++++ app/src/main/res/anim/push_buttom_out.xml	(revision )
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!-- 上下滑出式 -->
++<set xmlns:android="http://schemas.android.com/apk/res/android" >
++
++
++    <translate
++        android:duration="200"
++        android:fromYDelta="0"
++        android:toYDelta="50%p" />
++</set>
+\ No newline at end of file
+Index: app/src/main/res/layout/list_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/list_item.xml	(date 1476804096000)
++++ app/src/main/res/layout/list_item.xml	(revision )
+@@ -1,15 +1,15 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++              xmlns:app="http://schemas.android.com/apk/res-auto"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_margin="10dp"
++        android:layout_margin="5dp"
+         android:id="@+id/relativeLayout">
+ 
+-
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+@@ -29,7 +29,24 @@
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentStart="true"/>
+ 
+-        <TextView
++        <LinearLayout
++            android:id="@+id/listview_btn_layout"
++            android:layout_width="40dp"
++            android:layout_height="30dp"
++            android:gravity="center"
++            android:layout_centerVertical="true"
++            android:layout_alignParentRight="true"
++            android:layout_alignParentEnd="true">
++            <ImageView
++                android:id="@+id/listview_btn_imageview"
++                android:layout_width="15dp"
++                android:layout_height="20dp"
++                android:layout_marginLeft="25dp"
++                android:src="@drawable/a50"/>
++        </LinearLayout>
++
++
++        <!--<TextView
+             android:id="@+id/listview_music_duration"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+@@ -38,7 +55,7 @@
+             android:textColor="#000"
+             android:layout_centerVertical="true"
+             android:layout_alignParentRight="true"
+-            android:layout_alignParentEnd="true"/>
++            android:layout_alignParentEnd="true"/>-->
+ 
+ 
+     </RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/suyan/mymusic/activity/SelectPicPopupWindow.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/activity/SelectPicPopupWindow.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/activity/SelectPicPopupWindow.java	(revision )
+@@ -1,35 +1,72 @@
+ package com.suyan.mymusic.activity;
+ 
++import android.app.Activity;
++import android.app.AlertDialog;
++import android.content.DialogInterface;
+ import android.os.Bundle;
+-import android.support.v7.app.AppCompatActivity;
++import android.view.MotionEvent;
++import android.view.View;
++import android.widget.AdapterView;
++import android.widget.LinearLayout;
+ import android.widget.ListView;
+ import android.widget.SimpleAdapter;
++import android.widget.TextView;
++import android.widget.Toast;
+ 
+ import com.suyan.mymusic.R;
++import com.suyan.mymusic.db.MusicDB;
+ 
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
+ 
+-public class SelectPicPopupWindow extends AppCompatActivity {
++import static com.suyan.mymusic.activity.Home_Activity.musicList;
+ 
++public class SelectPicPopupWindow extends Activity {
++
+     private SimpleAdapter mSimpleAdapter;
+ 
+     private ListView alertListView;
+ 
++    private LinearLayout mLayout;
++
++    private TextView dialogMusicName;
++    private MusicDB mMusicDB;
++
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.alert_dialog);
+ 
++        mMusicDB = MusicDB.getInstance(SelectPicPopupWindow.this);
++
++        Bundle bundle = this.getIntent().getExtras();
++        final int selectID = bundle.getInt("selectID");
++
++        HashMap<String, String> list = musicList.get(selectID);
++        final String musictitle = list.get("title");
++        final String musicId = list.get("musicId");
++
++        dialogMusicName = (TextView) findViewById(R.id.dialog_music_name);
++        dialogMusicName.setText(musictitle);
++
++        mLayout = (LinearLayout) findViewById(R.id.pop_layout);
++        mLayout.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Toast.makeText(SelectPicPopupWindow.this, "提示：点击窗口外部关闭窗口！", Toast.LENGTH_SHORT).show();
++            }
++        });
++
+         //设置ListView的标题集合
+-        String[] title = new String[]{"下一首播放", "删除", "查看歌曲信息"};
++        final String[] title = new String[]{"删除", "查看歌曲信息"};
+ 
+         //设置ListView的图片资源
+-        int[] imageId = new int[]{R.drawable.t5, R.drawable.ss, R.drawable.su};
++        int[] imageId = new int[]{R.drawable.ss, R.drawable.su};
+ 
+-        List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
++        final List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
+ 
+         for (int i = 0; i < title.length; i++){
+             Map<String, Object> map = new HashMap<String, Object>();
+@@ -42,6 +79,45 @@
+ 
+         alertListView = (ListView) findViewById(R.id.dialog_list_view);
+         alertListView.setAdapter(mSimpleAdapter);
++        alertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
++            @Override
++            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
++                Map<String, Object> contentLists = lists.get(position);
++                String contentTitle = (String) contentLists.get("title");
++                switch (contentTitle){
++                    case "删除":
++                        AlertDialog.Builder builder = new AlertDialog.Builder(SelectPicPopupWindow.this);
++                        builder.setMessage("确定将所选音乐从本地列表中移除？");
++                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
++                            @Override
++                            public void onClick(DialogInterface dialog, int which) {
++                                mMusicDB.deleteMusic(musicId);
++                                finish();
++                                Toast.makeText(SelectPicPopupWindow.this, "删除成功", Toast.LENGTH_SHORT).show();
++                            }
++                        });
++                        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
++                            @Override
++                            public void onClick(DialogInterface dialog, int which) {
+ 
++                            }
++                        });
++                        builder.show();
++                        break;
++                    case "查看歌曲信息":
++                        Toast.makeText(SelectPicPopupWindow.this, "点击了：查看歌曲信息", Toast.LENGTH_SHORT).show();
++                        break;
++                }
++
++
++            }
++        });
++
++    }
++
++    @Override
++    public boolean onTouchEvent(MotionEvent event) {
++        finish();
++        return true;
+     }
+ }
+Index: app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java	(revision )
+@@ -21,24 +21,23 @@
+ import android.widget.ListView;
+ import android.widget.PopupMenu;
+ import android.widget.SeekBar;
+-import android.widget.SimpleAdapter;
+ import android.widget.TextView;
++import android.widget.Toast;
+ 
+ import com.suyan.mymusic.R;
+ import com.suyan.mymusic.db.MusicDB;
+ import com.suyan.mymusic.impl.IMusic;
+-import com.suyan.mymusic.model.Music;
+ import com.suyan.mymusic.server.MusicService;
++import com.suyan.mymusic.util.MyAdapter;
+ import com.suyan.mymusic.util.MyApp;
+ import com.suyan.mymusic.util.Utility;
+ 
+-import java.util.ArrayList;
+ import java.util.HashMap;
+-import java.util.Iterator;
+ import java.util.List;
+ 
+ import rebus.permissionutils.PermissionManager;
+ 
++import static com.suyan.mymusic.R.id.listview_btn_imageview;
+ import static com.suyan.mymusic.server.MusicService.mMediaPlayer;
+ 
+ public class Home_Activity extends Activity implements View.OnClickListener {
+@@ -48,8 +47,7 @@
+     public static List<HashMap<String, String >> musicList;
+ 
+     private static final String TAG = "Home_Activity";
+-    public  MusicDB mMusicDB;//数据库操作对象
+-    public  SimpleAdapter mAdapter;//ListView适配器
++    public static   MusicDB mMusicDB;//数据库操作对象
+     public  ListView mListView;//音乐ListView
+     private Button mButton;
+     private Button query_btn;
+@@ -74,7 +72,10 @@
+ 
+     private MyApp mApp = null;
+ 
++    private MyAdapter myAdapter;
+ 
++
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -94,7 +95,7 @@
+             @Override
+             public void onClick(View v) {
+                 Log.d(TAG, "点击了搜索按钮");
+-                Intent intentQuery = new Intent(getApplicationContext(), Query_Activity.class);
++                Intent intentQuery = new Intent(Home_Activity.this, Query_Activity.class);
+                 startActivity(intentQuery);
+             }
+         });
+@@ -158,8 +159,6 @@
+         };
+         bindService(intentService, connection, Context.BIND_ABOVE_CLIENT);
+ 
+-
+-
+         mListView = (ListView) findViewById(R.id.music_listview);
+         MyAdapter();
+         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+@@ -167,13 +166,11 @@
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 mustPosition = position;
+                 binder.doPlay(mustPosition);
+-
+             }
+         });
+ 
+         mButton = (Button) findViewById(R.id.bt);
+         mButton.setOnClickListener(this);
+-
+     }
+ 
+ 
+@@ -189,6 +186,9 @@
+     @Override
+     public void onClick(View v) {
+         switch (v.getId()){
++            case listview_btn_imageview:
++                Toast.makeText(Home_Activity.this, "点击更多按钮", Toast.LENGTH_SHORT).show();
++                break;
+             case R.id.bt:
+                 showPopupMenu(mButton);
+                 break;
+@@ -275,30 +275,18 @@
+         popupMenu.show();
+     }
+ 
+-    //获取数据库的信息
+-    public List<HashMap<String, String >> MyMusicList(){
+-        List<Music> musics = mMusicDB.loadMusic();
+-        List<HashMap<String, String >> musicList =  new ArrayList<HashMap<String, String>>();
+-        for(Iterator<Music> iterator = musics.iterator(); iterator.hasNext();){
+-            Music music = iterator.next();
+-            HashMap<String, String> map = new HashMap<String, String>();
+-            map.put("title", music.getLrcTitle());
+-            map.put("album", music.getAlbum());
+-            map.put("duration", Utility.Format(music.getDuration()));
+-            map.put("size", String.valueOf(music.getSize()));
+-            map.put("url", music.getUrl());
+-            map.put("musicId", String.valueOf(music.getMusicId()));
+-            map.put("artist", music.getArtist());
+-            musicList.add(map);
+-        }
+-        return musicList;
+-    }
+-
+     //初始化ListView
+     public void MyAdapter(){
+-        musicList = MyMusicList();
+-        mAdapter = new SimpleAdapter(Home_Activity.this, musicList, R.layout.list_item, new String[]{"title", "artist", "duration"}, new int[]{R.id.listview_music_title, R.id.listview_music_artist, R.id.listview_music_duration});
+-        mListView.setAdapter(mAdapter);
++        musicList = Utility.MyMusicList();
++        myAdapter = new MyAdapter(this, musicList);
++        mListView.setAdapter(myAdapter);
++    }
++
++
++    @Override
++    protected void onResume() {
++        super.onResume();
++        MyAdapter();
+     }
+ 
+     @Override
+Index: app/src/main/java/com/suyan/mymusic/server/MusicService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/server/MusicService.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/server/MusicService.java	(revision )
+@@ -11,6 +11,7 @@
+ import com.suyan.mymusic.activity.Home_Activity;
+ import com.suyan.mymusic.impl.IMusic;
+ 
++import java.io.IOException;
+ import java.util.HashMap;
+ 
+ import static com.suyan.mymusic.activity.Home_Activity.mSeekBar;
+@@ -39,22 +40,55 @@
+         return new MyBinder();
+     }
+ 
++    public void defaultPlay() {
++        Log.d(TAG, "调用了defaultPlay方法");
++        try {
++            HashMap<String, String> defaultList = musicList.get(0);
++            String defaultMusicPath = defaultList.get("url");
++            final String defaultMusicTitle = defaultList.get("title");
++            final String defaultMusicArtist = defaultList.get("artist");
++            Log.d(TAG, "时长:" + mMediaPlayer.getDuration());
++            Log.d(TAG, defaultMusicPath);
++            Log.d(TAG, "" + 0);
+ 
++            mMediaPlayer.reset();//准备
+ 
++            mMediaPlayer.setDataSource(defaultMusicPath);//设置音频路径
++
++            mMediaPlayer.prepareAsync();//异步准备音频资源
++            //调用mediaPlayer的监听方法，音频准备完毕会响应此方法
++            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
++                @Override
++                public void onPrepared(MediaPlayer mp) {
++                    Log.d(TAG, "开始播放");
++                    mSeekBar.setMax(mp.getDuration());
++
++                    Home_Activity.showTitle.setText(defaultMusicTitle);
++                    Home_Activity.showArtist.setText(defaultMusicArtist);
++                    Home_Activity.img_pause.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_play_pressed));
++
++                }
++            });
++        } catch (IOException e) {
++            e.printStackTrace();
++        }
++    }
++
+     /**
+      * 播放方法
++     *
+      * @param
+      */
+-    public void Play(int position){
++    public void Play(int position) {
+         try {
+ 
+             HashMap<String, String> list = musicList.get(position);
+             String path = list.get("url");
+             final String title = list.get("title");
+             final String artist = list.get("artist");
+-            Log.d(TAG, "时长:"+mMediaPlayer.getDuration());
++            Log.d(TAG, "时长:" + mMediaPlayer.getDuration());
+             Log.d(TAG, path);
+-            Log.d(TAG, ""+position);
++            Log.d(TAG, "" + position);
+ 
+             mMediaPlayer.reset();//准备
+             mMediaPlayer.setDataSource(path);//设置音频路径
+@@ -78,10 +112,10 @@
+                 @Override
+                 public void onCompletion(MediaPlayer mp) {
+                     Log.d(TAG, "调用OnCompletionListener");
+-                    int nextPosition = mustPosition+1;
++                    int nextPosition = mustPosition + 1;
+                     int size = musicList.size();
+-                    Log.d(TAG, "size:"+size);
++                    Log.d(TAG, "size:" + size);
+-                    if (mustPosition == size-1){
++                    if (mustPosition == size - 1) {
+                         nextPosition = 0;
+                     }
+                     Play(nextPosition);
+@@ -93,11 +127,12 @@
+         }
+     }
+ 
++
+     /**
+      * 暂停
+      */
+-    public void pause(){
++    public void pause() {
+-        if(mMediaPlayer != null && mMediaPlayer.isPlaying()){
++        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+             mMediaPlayer.pause();//暂停播放
+         }
+     }
+@@ -105,28 +140,36 @@
+     /**
+      * 继续播放
+      */
+-    public void continuePlay(){
++    public void continuePlay() {
+         mMediaPlayer.start();
+     }
+ 
+-    class MyBinder extends Binder implements IMusic{
++    class MyBinder extends Binder implements IMusic {
+ 
++
++
+         //供外部使用的播放方法
+-        public void doPlay(int position){
++        public void doPlay(int position) {
+             Play(position);
+         }
+ 
+         //暂停
+-        public void doPause(){
++        public void doPause() {
+             pause();
+         }
+ 
+         //继续播放
+-        public void duContinuePlay(){
++        public void duContinuePlay() {
+             continuePlay();
+         }
+ 
++        //设置开始默认路径
++        public void doDefaultPlay() {
++            defaultPlay();
+-    }
++        }
++
++    }
++
+     @Override
+     public void onDestroy() {
+         Log.d(TAG, "onDestroy");
+Index: app/src/main/java/com/suyan/mymusic/db/MusicDB.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/db/MusicDB.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/db/MusicDB.java	(revision )
+@@ -83,6 +83,14 @@
+     }
+ 
+     /**
++     * 删除数据库数据
++     */
++    public void deleteMusic(String musicId){
++        //mSQLiteDatabase.execSQL("delete from music where musicId='"+musicId+"'");
++        mSQLiteDatabase.delete("music", "musicId=?", new String[]{musicId});
++    }
++
++    /**
+      * 获取本地数据库里的所有的音乐
+      */
+ 
+Index: app/src/main/java/com/suyan/mymusic/util/Utility.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/util/Utility.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/util/Utility.java	(revision )
+@@ -5,10 +5,14 @@
+ import android.database.Cursor;
+ import android.provider.MediaStore;
+ 
++import com.suyan.mymusic.activity.Home_Activity;
++import com.suyan.mymusic.db.MusicDB;
+ import com.suyan.mymusic.model.Music;
+ 
+ import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.Iterator;
+ import java.util.List;
+ 
+ /**
+@@ -19,6 +23,9 @@
+  * 把一个long单位转换成00:00
+  */
+ public class Utility {
++
++    public static MusicDB mMusicDB;
++
+     public static ProgressDialog progressDialog;
+     public static String Format(long time){
+         SimpleDateFormat format = new SimpleDateFormat("mm:ss");
+@@ -26,6 +33,25 @@
+         return hmsString;
+     }
+ 
++    //获取数据库的信息
++    public static List<HashMap<String, String >> MyMusicList(){
++        mMusicDB = Home_Activity.mMusicDB;
++        List<Music> musics = mMusicDB.loadMusic();
++        List<HashMap<String, String >> musicList =  new ArrayList<HashMap<String, String>>();
++        for(Iterator<Music> iterator = musics.iterator(); iterator.hasNext();){
++            Music music = iterator.next();
++            HashMap<String, String> map = new HashMap<String, String>();
++            map.put("title", music.getLrcTitle());
++            map.put("album", music.getAlbum());
++            map.put("duration", Utility.Format(music.getDuration()));
++            map.put("size", String.valueOf(music.getSize()));
++            map.put("url", music.getUrl());
++            map.put("musicId", String.valueOf(music.getMusicId()));
++            map.put("artist", music.getArtist());
++            musicList.add(map);
++        }
++        return musicList;
++    }
+ 
+     /**
+      * 关闭进度对话框
+Index: app/src/main/java/com/suyan/mymusic/util/MyAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/util/MyAdapter.java	(revision )
++++ app/src/main/java/com/suyan/mymusic/util/MyAdapter.java	(revision )
+@@ -0,0 +1,95 @@
++package com.suyan.mymusic.util;
++
++import android.content.Context;
++import android.content.Intent;
++import android.os.Bundle;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.BaseAdapter;
++import android.widget.LinearLayout;
++import android.widget.TextView;
++import android.widget.Toast;
++
++import com.suyan.mymusic.R;
++import com.suyan.mymusic.activity.SelectPicPopupWindow;
++
++import java.util.HashMap;
++import java.util.List;
++
++/**
++ * Created by Yan on 2016/10/19.
++ */
++
++public class MyAdapter extends BaseAdapter {
++
++    private List<HashMap<String, String >> musicList;
++    private Context context;
++    private LayoutInflater mLayoutInflater;//视图容器
++    //自定义控件集合
++    public final class ListItemView{
++        public TextView musicName;
++        public TextView musicArtist;
++        //public ImageView imageViewMore;
++        public LinearLayout mLayoutMore;
++    }
++
++    public MyAdapter(Context context, List<HashMap<String, String >> listItems){
++        this.context = context;
++        mLayoutInflater = LayoutInflater.from(context);//创建视图容器并设置上下文
++        this.musicList = listItems;
++    }
++
++
++    @Override
++    public int getCount() {
++        return musicList.size();
++    }
++
++    @Override
++    public Object getItem(int position) {
++        return null;
++    }
++
++    @Override
++    public long getItemId(int position) {
++        return 0;
++    }
++
++    @Override
++    public View getView(int position, View convertView, ViewGroup parent) {
++        final int selectID = position;
++        ListItemView listItemView = null;
++        if (convertView == null) {
++            listItemView = new ListItemView();
++            //获取list_item布局文件的视图
++            convertView = mLayoutInflater.inflate(R.layout.list_item, null);
++            //获取控件对象
++            listItemView.musicName = (TextView) convertView.findViewById(R.id.listview_music_title);
++            listItemView.musicArtist = (TextView) convertView.findViewById(R.id.listview_music_artist);
++            //listItemView.imageViewMore = (ImageView) convertView.findViewById(R.id.listview_btn_imageview);
++            listItemView.mLayoutMore = (LinearLayout) convertView.findViewById(R.id.listview_btn_layout);
++            //设置控件集到convertView
++            convertView.setTag(listItemView);
++        } else {
++            listItemView = (ListItemView) convertView.getTag();
++        }
++
++        //设置文字和图片
++        listItemView.musicName.setText(musicList.get(position).get("title"));
++        listItemView.musicArtist.setText(musicList.get(position).get("artist"));
++
++        listItemView.mLayoutMore.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Toast.makeText(context, "点击了更多按钮",Toast.LENGTH_SHORT).show();
++                Intent intent = new Intent(context, SelectPicPopupWindow.class);
++                Bundle bundle = new Bundle();
++                bundle.putInt("selectID", selectID);
++                intent.putExtras(bundle);
++                context.startActivity(intent);
++            }
++        });
++        return convertView;
++    }
++}
+Index: app/src/main/res/anim/push_bottom_in.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/anim/push_bottom_in.xml	(revision )
++++ app/src/main/res/anim/push_bottom_in.xml	(revision )
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!-- 上下滑入式 -->
++<set xmlns:android="http://schemas.android.com/apk/res/android" >
++
++    <translate
++        android:duration="200"
++        android:fromYDelta="100%p"
++        android:toYDelta="0"
++        />
++</set>
+\ No newline at end of file
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(date 1476804096000)
++++ app/src/main/res/values/styles.xml	(revision )
+@@ -8,4 +8,43 @@
+         <item name="colorAccent">@color/colorAccent</item>
+     </style>
+ 
++    <style name="AnimBottom" parent="@android:style/Animation">
++        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
++        <item name="android:windowExitAnimation">@anim/push_buttom_out</item>
++    </style>
++
++    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog">
++        <item name="android:windowAnimationStyle">@style/AnimBottom</item>
++        <item name="android:windowFrame">@null</item>
++        ;!-- 边框 -->
++        <item name="android:windowIsFloating">true</item>
++        ;!-- 是否浮现在activity之上 -->
++        <item name="android:windowIsTranslucent">true</item>
++        ;!-- 半透明 -->
++        <item name="android:windowNoTitle">true</item>
++        ;!-- 无标题 -->
++        <item name="android:windowBackground">@android:color/transparent</item>
++        ;!-- 背景透明 -->
++        <item name="android:backgroundDimEnabled">true</item>
++        ;!-- 模糊 -->
++    </style>
++
++    <style name="CustomListViewStyle" >
++        <!-- 设置透明背景色 -->
++        <item name="android:cacheColorHint">#00000000</item>
++        <!-- 指定分割线颜色 -->
++        <item name="android:divider">@color/gray</item>
++        <!-- 指定分割线高度 -->
++        <item name="android:dividerHeight">1px</item>
++        <!-- 设置listSelector的颜色在数据的下面 -->
++        <item name="android:drawSelectorOnTop">false</item>
++        <!-- 设置点击选中颜色 -->
++        <item name="android:listSelector">@drawable/listview_background</item>
++        <!-- 设置ListView默认背景色 -->
++        <item name="android:background">@color/white</item>
++        <!-- 设置ListView距左边距距离 -->
++        <item name="android:paddingLeft">3dip</item>
++        <!-- 设置ListView距右边距距离 -->
++        <item name="android:paddingRight">3dip</item>
++    </style>
+ </resources>
+Index: app/src/main/res/layout/alert_dialog.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/alert_dialog.xml	(date 1476804096000)
++++ app/src/main/res/layout/alert_dialog.xml	(revision )
+@@ -5,6 +5,9 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
++    android:background="#FFFFFF"
++    android:id="@+id/pop_layout"
++    android:layout_alignParentBottom="true"
+     tools:context="com.suyan.mymusic.activity.SelectPicPopupWindow">
+ 
+     <LinearLayout
+@@ -16,7 +19,7 @@
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="歌曲："
+-            android:textSize="20sp"
++            android:textSize="14sp"
+             android:layout_marginTop="10dp"
+             android:layout_marginLeft="10dp"
+             android:layout_marginBottom="10dp"
+@@ -27,14 +30,16 @@
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="魔兽世界"
+-            android:textSize="20sp"
++            android:textSize="14sp"
+             android:layout_marginTop="10dp"
+-            android:layout_marginLeft="10dp"
++            android:layout_marginLeft="2dp"
+             android:layout_marginBottom="10dp"
+             android:textColor="#80000000"/>
+     </LinearLayout>
+     <ListView
+         android:id="@+id/dialog_list_view"
+         android:layout_width="match_parent"
+-        android:layout_height="wrap_content"></ListView>
++        android:layout_height="wrap_content"
++        style="@style/CustomListViewStyle"
++        ></ListView>
+ </LinearLayout>
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(date 1476804096000)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -33,7 +33,9 @@
+         </activity>
+         <activity android:name=".activity.Seek_Ok_Activity">
+         </activity>
+-        <activity android:name=".activity.SelectPicPopupWindow">
++        <activity android:name=".activity.SelectPicPopupWindow"
++                  android:theme="@style/MyDialogStyleBottom"
++            >
+         </activity>
+     </application>
+ 
+\ No newline at end of file
+Index: app/src/main/java/com/suyan/mymusic/activity/Query_Activity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/activity/Query_Activity.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/activity/Query_Activity.java	(revision )
+@@ -94,7 +94,7 @@
+                 String text = s.toString();
+                 Log.d(TAG, "搜索框发生了变化："+text);
+                 queryMusicList = QueryLoadMusicList(text);
+-                mAdapter = new SimpleAdapter(getApplicationContext(), queryMusicList, R.layout.list_item, new String[]{"title", "artist", "duration"}, new int[]{R.id.listview_music_title, R.id.listview_music_artist, R.id.listview_music_duration});
++                mAdapter = new SimpleAdapter(getApplicationContext(), queryMusicList, R.layout.list_item, new String[]{"title", "artist", "duration"}, new int[]{R.id.listview_music_title, R.id.listview_music_artist});
+                 queryListView.setAdapter(mAdapter);
+             }
+ 
+Index: app/src/main/res/drawable/listview_background.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/listview_background.xml	(revision )
++++ app/src/main/res/drawable/listview_background.xml	(revision )
+@@ -0,0 +1,18 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<selector xmlns:android="http://schemas.android.com/apk/res/android">
++    <item android:state_pressed="true">
++        <shape>
++            <solid android:color="@color/darkGrey" />
++        </shape>
++    </item>
++    <item android:state_focused="true">
++        <shape>
++            <solid android:color="@color/aquamarine" />
++        </shape>
++    </item>
++    <item>
++        <shape>
++            <solid android:color="@color/white" />
++        </shape>
++    </item>
++</selector>
+\ No newline at end of file
+Index: app/src/main/java/com/suyan/mymusic/impl/IMusic.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/impl/IMusic.java	(date 1476804096000)
++++ app/src/main/java/com/suyan/mymusic/impl/IMusic.java	(revision )
+@@ -9,5 +9,7 @@
+ 
+    void doPause();
+ 
++   void doDefaultPlay();
++
+    void duContinuePlay();
+ }

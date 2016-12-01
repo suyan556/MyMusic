@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_buttom_out</item>
+    </style>
+
+    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/AnimBottom</item>
+        <item name="android:windowFrame">@null</item>
+        ;!-- 边框 -->
+        <item name="android:windowIsFloating">false</item>
+        ;!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        ;!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        ;!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        ;!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        ;!-- 模糊 -->
+    </style>
+
+    <style name="CustomListViewStyle" >
+        <!-- 设置透明背景色 -->
+        <item name="android:cacheColorHint">#00000000</item>
+        <!-- 指定分割线颜色 -->
+        <item name="android:divider">@color/gray</item>
+        <!-- 指定分割线高度 -->
+        <item name="android:dividerHeight">1px</item>
+        <!-- 设置listSelector的颜色在数据的下面 -->
+        <item name="android:drawSelectorOnTop">false</item>
+        <!-- 设置点击选中颜色 -->
+        <item name="android:listSelector">@drawable/listview_background</item>
+        <!-- 设置ListView默认背景色 -->
+        <item name="android:background">@color/white</item>
+        <!-- 设置ListView距左边距距离 -->
+        <item name="android:paddingLeft">3dp</item>
+        <!-- 设置ListView距右边距距离 -->
+        <item name="android:paddingRight">3dp</item>
+    </style>
+</resources>

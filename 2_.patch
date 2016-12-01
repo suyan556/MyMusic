@@ -1,0 +1,16 @@
+Index: app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java	(date 1476676806000)
++++ app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java	(revision )
+@@ -81,7 +81,7 @@
+         requestWindowFeature(Window.FEATURE_NO_TITLE);
+         setContentView(R.layout.home_activity);
+ 
+-        //这是我提交后的第一次改动
++        //这是我提交后的第2次改动
+ 
+ 
+         mMusicDB = MusicDB.getInstance(this);//获取数据库处理对象

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.suyan.mymusic"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name="com.suyan.mymusic.util.MyApp"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.Home_Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".server.MusicService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <activity android:name=".activity.Query_Activity">
+        </activity>
+        <activity android:name=".activity.SDCardFileExplorer_Activity">
+        </activity>
+        <activity android:name=".activity.Seek_Activity">
+        </activity>
+        <activity android:name=".activity.Seek_Ok_Activity">
+        </activity>
+        <activity
+            android:name=".activity.SelectPicPopupWindow"
+            android:theme="@style/MyDialogStyleBottom">
+        </activity>
+        <activity
+            android:name=".activity.Details_Activity"
+            android:theme="@style/MyDialogStyleBottom">
+        </activity>
+        <activity android:name=".activity.ShowMusic_Activity">
+        </activity>
+    </application>
+
+</manifest>

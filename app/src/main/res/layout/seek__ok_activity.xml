@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.suyan.mymusic.activity.Seek_Ok_Activity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#FFF"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        >
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:src="@drawable/local_scan_mobile_0"
+            android:id="@+id/imageView2"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/local_scan_ok"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/imageView4"/>
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="共扫描到"
+            />
+        <TextView
+            android:id="@+id/musicCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="首歌曲"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_gravity="top"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/seek_ok_backIndex"
+            android:text="回到我的音乐"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:textColor="#FFF"
+            android:background="@drawable/selector_btn_all_search"
+            android:layout_marginBottom="30dp"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

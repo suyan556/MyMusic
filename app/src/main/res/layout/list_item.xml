@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="歌曲名"
+            android:lines="1"
+            android:singleLine="true"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:id="@+id/listview_music_title"/>
+
+        <TextView
+            android:id="@+id/listview_music_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="歌手"
+            android:textSize="15sp"
+            android:textColor="#80000000"
+            android:layout_below="@+id/listview_music_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/listview_btn_layout"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:background="@drawable/selector_btn_layout"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+        <ImageView
+            android:id="@+id/listview_btn_imageview"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:src="@drawable/a50"/>
+    </LinearLayout>
+</LinearLayout>

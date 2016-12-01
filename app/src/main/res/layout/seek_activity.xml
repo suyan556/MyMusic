@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.suyan.mymusic.activity.Seek_Activity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#ff0000"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#ff0000"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/seek_back"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@drawable/fb"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+
+            />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="扫描歌曲"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:src="@drawable/local_scan_mobile_0"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"/>
+
+
+        <TextView
+            android:id="@+id/allSearch_textView"
+            android:layout_below="@+id/imageView"
+            android:text="全盘搜索"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFF"
+            android:background="@drawable/selector_btn_all_search"
+            android:layout_marginTop="26dp"/>
+
+        <TextView
+            android:id="@+id/customSearch_textView"
+            android:text="自定义搜索"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_below="@+id/allSearch_textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/selector_btn_custom_search"
+            android:textColor="#000"/>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/local_magnifying_glass"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="112dp"
+            android:id="@+id/imageView3"/>
+
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/sdcard_file_explorer_activity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.suyan.mymusic.activity.SDCardFileExplorer_Activity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#ff0000"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#ff0000"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/query_back"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@drawable/fb"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+
+            />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="自定义扫描"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/custom_seek_Parent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/aeq"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            />
+
+        <TextView
+            android:id="@+id/sdcard_path"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="/storage/"
+            android:gravity="center"
+            android:textColor="#88000000"
+            android:textSize="15sp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/custom_seek_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        ></ListView>
+    <Button
+        android:id="@+id/sdcard_button_seek"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="立即扫描"
+        />
+
+</LinearLayout>

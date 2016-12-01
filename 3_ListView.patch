@@ -1,0 +1,176 @@
+Index: app/src/main/res/layout/alert_dialog.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/alert_dialog.xml	(revision )
++++ app/src/main/res/layout/alert_dialog.xml	(revision )
+@@ -0,0 +1,40 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:orientation="vertical"
++    tools:context="com.suyan.mymusic.activity.SelectPicPopupWindow">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="horizontal"
++        >
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="歌曲："
++            android:textSize="20sp"
++            android:layout_marginTop="10dp"
++            android:layout_marginLeft="10dp"
++            android:layout_marginBottom="10dp"
++            android:textColor="#80000000"
++            />
++        <TextView
++            android:id="@+id/dialog_music_name"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="魔兽世界"
++            android:textSize="20sp"
++            android:layout_marginTop="10dp"
++            android:layout_marginLeft="10dp"
++            android:layout_marginBottom="10dp"
++            android:textColor="#80000000"/>
++    </LinearLayout>
++    <ListView
++        android:id="@+id/dialog_list_view"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"></ListView>
++</LinearLayout>
+Index: app/src/main/java/com/suyan/mymusic/activity/SelectPicPopupWindow.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/activity/SelectPicPopupWindow.java	(revision )
++++ app/src/main/java/com/suyan/mymusic/activity/SelectPicPopupWindow.java	(revision )
+@@ -0,0 +1,47 @@
++package com.suyan.mymusic.activity;
++
++import android.os.Bundle;
++import android.support.v7.app.AppCompatActivity;
++import android.widget.ListView;
++import android.widget.SimpleAdapter;
++
++import com.suyan.mymusic.R;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++public class SelectPicPopupWindow extends AppCompatActivity {
++
++    private SimpleAdapter mSimpleAdapter;
++
++    private ListView alertListView;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.alert_dialog);
++
++        //设置ListView的标题集合
++        String[] title = new String[]{"下一首播放", "删除", "查看歌曲信息"};
++
++        //设置ListView的图片资源
++        int[] imageId = new int[]{R.drawable.t5, R.drawable.ss, R.drawable.su};
++
++        List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
++
++        for (int i = 0; i < title.length; i++){
++            Map<String, Object> map = new HashMap<String, Object>();
++            map.put("title", title[i]);
++            map.put("image", imageId[i]);
++            lists.add(map);
++        }
++
++        mSimpleAdapter = new SimpleAdapter(SelectPicPopupWindow.this, lists, R.layout.dialog_tiem, new String[]{"title", "image"}, new int[]{R.id.alert_title, R.id.alert_image});
++
++        alertListView = (ListView) findViewById(R.id.dialog_list_view);
++        alertListView.setAdapter(mSimpleAdapter);
++
++    }
++}
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(date 1476676806000)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -33,6 +33,8 @@
+         </activity>
+         <activity android:name=".activity.Seek_Ok_Activity">
+         </activity>
++        <activity android:name=".activity.SelectPicPopupWindow">
++        </activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java	(date 1476676806000)
++++ app/src/main/java/com/suyan/mymusic/activity/Home_Activity.java	(revision )
+@@ -81,9 +81,6 @@
+         requestWindowFeature(Window.FEATURE_NO_TITLE);
+         setContentView(R.layout.home_activity);
+ 
+-        //这是我提交后的第一次改动
+-
+-
+         mMusicDB = MusicDB.getInstance(this);//获取数据库处理对象
+ 
+         mApp = (MyApp) getApplication();
+Index: app/src/main/res/layout/dialog_tiem.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/dialog_tiem.xml	(revision )
++++ app/src/main/res/layout/dialog_tiem.xml	(revision )
+@@ -0,0 +1,31 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++              android:layout_width="match_parent"
++              android:orientation="horizontal"
++              android:layout_height="wrap_content">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        >
++
++        <ImageView
++            android:id="@+id/alert_image"
++            android:layout_width="30dp"
++            android:layout_height="30dp"
++            android:layout_margin="5dp"
++            android:src="@drawable/t5"
++            />
++        <TextView
++            android:id="@+id/alert_title"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="下一首播放"
++            android:layout_gravity="center"
++            android:layout_marginLeft="20dp"
++            android:textSize="16sp"
++            android:textColor="#000"
++            />
++
++    </LinearLayout>
++</LinearLayout>
